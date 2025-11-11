@@ -16,7 +16,9 @@ New-Item -ItemType Directory -Force -Path $wixDir | Out-Null
 
 $env:GOOS = 'windows'
 $env:GOARCH = 'amd64'
-$env:CGO_ENABLED = '1'
+$cgo = $env:CGO_ENABLED
+if (-not $cgo) { $cgo = '0' }
+$env:CGO_ENABLED = $cgo
 $binaryPath = Join-Path $binDir 'clipflow-agent.exe'
 Write-Host "Building Windows agent at $binaryPath"
 & go build -o $binaryPath "$rootDir/cmd/agent"

@@ -14,7 +14,8 @@ build_arch() {
         local out_dir="$DIST_DIR/tmp/$arch"
         mkdir -p "$out_dir"
         echo "Building $APP_NAME for darwin/$arch"
-        CGO_ENABLED=1 GOOS=darwin GOARCH="$arch" go build -o "$out_dir/$BIN_NAME" "$ROOT_DIR/cmd/agent"
+        local cgo="${CGO_ENABLED:-0}"
+        CGO_ENABLED="$cgo" GOOS=darwin GOARCH="$arch" go build -o "$out_dir/$BIN_NAME" "$ROOT_DIR/cmd/agent"
 }
 
 build_arch amd64
