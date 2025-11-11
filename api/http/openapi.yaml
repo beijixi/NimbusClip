@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: Clipflow API
+  version: 0.1.0
+paths:
+  /api/v1/clipboard/sync/upload:
+    post:
+      summary: Upload clipboard changes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadChangesRequest'
+      responses:
+        '200':
+          description: Upload result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadChangesResponse'
+  /api/v1/clipboard/sync/changes:
+    get:
+      summary: Fetch clipboard changes since a version
+      parameters:
+        - in: query
+          name: lastVersion
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Change set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChangesResponse'
+components:
+  schemas:
+    UploadChangesRequest:
+      type: object
+      properties:
+        lastKnownVersion:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClipboardSyncUploadItem'
+    ClipboardSyncUploadItem:
+      type: object
+      properties:
+        localId:
+          type: string
+        remoteId:
+          type: string
+        contentType:
+          type: string
+        content:
+          type: string
+        favorite:
+          type: boolean
+        deleted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UploadChangesResponse:
+      type: object
+      properties:
+        currentVersion:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClipboardSyncUploadResult'
+    ClipboardSyncUploadResult:
+      type: object
+      properties:
+        localId:
+          type: string
+        remoteId:
+          type: string
+        version:
+          type: integer
+    GetChangesResponse:
+      type: object
+      properties:
+        currentVersion:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClipboardItemChange'
+    ClipboardItemChange:
+      type: object
+      properties:
+        id:
+          type: string
+        contentType:
+          type: string
+        content:
+          type: string
+        favorite:
+          type: boolean
+        deleted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        version:
+          type: integer
