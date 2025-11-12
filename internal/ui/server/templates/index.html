@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Clipflow Clipboard</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">Clipflow</div>
+    <nav class="nav">
+        <button class="nav-btn active" data-target="history-view">History</button>
+        <button class="nav-btn" data-target="settings-view">Settings</button>
+        <button class="nav-btn" data-target="hotkey-view">Hotkeys</button>
+    </nav>
+</header>
+<main class="content">
+    <section id="history-view" class="view active">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Clipboard History</h2>
+                <div class="search-group">
+                    <input type="search" id="searchInput" placeholder="Search snippets..." />
+                    <label class="checkbox"><input type="checkbox" id="favoriteOnly" /> Favorites</label>
+                    <button id="refreshHistory" class="secondary">Refresh</button>
+                </div>
+            </div>
+            <div class="history-grid">
+                <ul id="historyList" class="history-list"></ul>
+                <div class="history-detail" id="historyDetail">
+                    <p class="placeholder">Select an item to preview</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="settings-view" class="view">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Agent &amp; Sync Settings</h2>
+            </div>
+            <form id="settingsForm" class="form-grid">
+                <label>Agent IPC Endpoint
+                    <input type="text" id="agentEndpoint" required />
+                </label>
+                <label>Server URL
+                    <input type="text" id="serverUrl" required />
+                </label>
+                <label>User ID
+                    <input type="text" id="userId" />
+                </label>
+                <label>Device ID
+                    <input type="text" id="deviceId" />
+                </label>
+                <label>Sync Interval (seconds)
+                    <input type="number" id="syncInterval" min="1" />
+                </label>
+                <div class="form-actions">
+                    <button type="submit">Save Settings</button>
+                    <button type="button" id="reloadSettings" class="secondary">Reload</button>
+                </div>
+            </form>
+            <div id="settingsStatus" class="status"></div>
+        </div>
+    </section>
+    <section id="hotkey-view" class="view">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Global Shortcut</h2>
+            </div>
+            <div class="hotkey-card">
+                <p>Configure the global shortcut that opens this dashboard.</p>
+                <div class="hotkey-inputs">
+                    <input type="text" id="hotkeyInput" placeholder="ctrl+shift+v" />
+                    <button id="saveHotkey">Apply Hotkey</button>
+                </div>
+                <p class="hint" id="hotkeyHint"></p>
+            </div>
+        </div>
+    </section>
+</main>
+<div id="toast" class="toast hidden"></div>
+<script>
+    window.__clipflow = {
+        hotkeySupported: {{.HotkeySupported}},
+        hotkeyError: {{.HotkeyError | printf "%q"}},
+        currentHotkey: {{.Hotkey | printf "%q"}}
+    };
+</script>
+<script src="/assets/app.js"></script>
+</body>
+</html>
